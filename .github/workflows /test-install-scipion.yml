@@ -15,4 +15,4 @@ jobs:
         ref: ${{ github.head_ref }}
 
     - name: Run Scipion installation step
-      uses: ./.github/workflow-templates/install-scipion.yml
+      uses: ./.github/reusable-steps/install-scipion
