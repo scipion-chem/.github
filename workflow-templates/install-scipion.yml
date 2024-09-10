@@ -1,0 +1,38 @@
+name: Install Scipion
+
+on:
+  workflow_call:
+
+jobs:
+  install-scipion:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Free Disk Space (Ubuntu only)
+        uses: jlumbroso/free-disk-space@main
+  
+      - name: Set up MPI
+        uses: mpi4py/setup-mpi@master
+        with:
+          mpi: 'openmpi'
+  
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget gcc g++ make cmake
+          
+      - name: Install Miniconda
+        uses: conda-incubator/setup-miniconda@main
+        with:
+          miniconda-version: "latest"
+          auto-update-conda: true
+          auto-activate-base: true
+          activate-environment: scipion3
+          python-version: "3.8"
+
+      - name: Install Scipion
+        working-directory: ${{ github.workspace }}/../
+        run: |
+          pip cache purge
+          pip install --user scipion-installer
+          python -m scipioninstaller -conda -noAsk scipion
