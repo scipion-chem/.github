@@ -9,4 +9,4 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: scipion-chem/.github@${{ github.head_ref }}
+    - uses: ./.github/workflow-templates/install-scipion.yml
