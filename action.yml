@@ -1,0 +1,20 @@
+name: "Install Scipion"
+description: "Frees up disk space, installs dependencies, installs Miniconda, and finally Scipion"
+
+inputs:
+  dummy_input:
+    description: "Something"
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up MPI
+      uses: mpi4py/setup-mpi@master
+      with:
+        mpi: 'openmpi'
+    
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y wget gcc g++ make cmake
