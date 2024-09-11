@@ -1,0 +1,19 @@
+name: Dummy workflow
+on:
+  workflow_dispatch:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@main
+      with:
+        ref: ${{ github.head_ref }}
+
+    - name: Set up MPI
+      uses: mpi4py/setup-mpi@master
+      with:
+        mpi: 'openmpi'
