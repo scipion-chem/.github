@@ -1,11 +1,6 @@
 name: "Install Scipion"
 description: "Frees up disk space, installs dependencies, installs Miniconda, and finally Scipion"
 
-inputs:
-  dummy_input:
-    description: "Something"
-    required: false
-
 runs:
   using: "composite"
   steps:
