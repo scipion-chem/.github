@@ -4,7 +4,7 @@ on:
   pull_request:
 
 jobs:
-  test-composite:
+  test-install-scipion:
     runs-on: ubuntu-latest
 
     steps:
