@@ -14,5 +14,5 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
 
-      - name: Run Scipion installation step
-        uses: scipion-chem/.github@workflow-install-scipion
+      #- name: Run Scipion installation step
+      #  uses: scipion-chem/.github@workflow-install-scipion
