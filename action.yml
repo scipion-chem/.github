@@ -15,6 +15,7 @@ runs:
         mpi: 'openmpi'
     
     - name: Install dependencies
+      shell: bash
       run: |
         sudo apt-get update
         sudo apt-get install -y wget gcc g++ make cmake
