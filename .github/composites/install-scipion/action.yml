@@ -28,6 +28,7 @@ runs:
         python-version: "3.8"
     
     - name: Install Scipion
+      shell: bash
       working-directory: ${{ github.workspace }}/../
       run: |
         pip cache purge
