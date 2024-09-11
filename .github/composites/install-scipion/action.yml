@@ -33,4 +33,5 @@ runs:
       run: |
         pip cache purge
         pip install --user scipion-installer
-        python3 -m scipioninstaller -conda -noAsk scipion
+        python -m scipioninstaller -conda -noAsk scipion
+        echo "SCIPION_CANCEL_XMIPP_BINDING_WARNING = True" >> scipion/config/scipion.conf
