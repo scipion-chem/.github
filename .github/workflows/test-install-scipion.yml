@@ -12,3 +12,6 @@ jobs:
         uses: actions/checkout@main
         with:
           ref: ${{ github.head_ref }}
+      
+      - name: Test action
+        uses: scipion-chem/.github@test-workflow
