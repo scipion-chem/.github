@@ -14,4 +14,6 @@ jobs:
           ref: ${{ github.head_ref }}
       
       - name: Test action
-        uses: scipion-chem/.github@test-workflow
+        env:
+          TARGET_BRANCH: ${{ github.head_ref }}
+        uses: scipion-chem/.github@$TARGET_BRANCH
