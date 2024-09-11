@@ -14,4 +14,4 @@ jobs:
           ref: ${{ github.head_ref }}
       
       - name: Test action
-        uses: ./github/composites/install-scipion
+        uses: ./.github/composites/install-scipion
