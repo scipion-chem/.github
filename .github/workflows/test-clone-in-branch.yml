@@ -19,9 +19,13 @@ jobs:
           repo_url: $(git config --get remote.origin.url)
           target_name: "test"
           path: ${{ github.workspace }}/../
+
+      - name: Setup folder for default name test
+        working-directory: ${{ github.workspace }}/../
+        run: mkdir default-name-test
       
       - name: Run clone in branch step (default name)
         uses: ./.github/composites/clone-in-branch
         with:
           repo_url: $(git config --get remote.origin.url)
-          path: ${{ github.workspace }}
+          path: ${{ github.workspace }}/../default-name-test
