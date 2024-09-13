@@ -31,3 +31,15 @@ jobs:
           repo_url: $(git config --get remote.origin.url)
           path: ${{ github.workspace }}/../default-name-test
           verbose: true
+      
+      - name: Setup folder for branch checkout test
+        working-directory: ${{ github.workspace }}/../
+        run: mkdir branch-checkout-test
+      
+      - name: Run clone in branch step (with branches)
+        uses: ./.github/composites/clone-in-branch
+        with:
+          repo_url: $(git config --get remote.origin.url)
+          path: ${{ github.workspace }}/../branch-checkout-test
+          verbose: true
+          prioritized_branches: "noexiste,${{ github.head_ref }}"
