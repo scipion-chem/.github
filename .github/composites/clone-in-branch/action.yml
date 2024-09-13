@@ -27,7 +27,7 @@ runs:
       shell: bash
       run: |
         echo "REPO_URL=${{ inputs.repo_url }}" >> $GITHUB_ENV
-        if ${{ inputs.verbose }} == 'true':
+        if [[ ${{ inputs.verbose }} == 'true' ]] ; then
           echo "Received git url: $REPO_URL"
         fi
 
@@ -36,12 +36,12 @@ runs:
       working-directory: ${{ inputs.path }}
       run: |
         if [ -n "${{ inputs.target_name }}" ]; then
-          if ${{ inputs.verbose }} == 'true':
+          if [[ ${{ inputs.verbose }} == 'true' ]] ; then
             echo "Cloning with name: ${{ inputs.target_name }}"
           fi
           git clone $REPO_URL ${{ inputs.target_name }}
         else
-          if ${{ inputs.verbose }} == 'true':
+          if [[ ${{ inputs.verbose }} == 'true' ]] ; then
             echo "Cloning with default name"
           fi
           git clone $REPO_URL
