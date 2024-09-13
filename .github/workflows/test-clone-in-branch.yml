@@ -10,8 +10,17 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@main
-        with:
-          ref: ${{ github.head_ref }}
+
+      - name: Get branch name
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            BRANCH_NAME=${{ github.head_ref }}
+          else
+            ref=${{ github.ref }}
+            BRANCH_NAME=${ref#refs/heads/}
+          fi
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+          echo "Branch name: $BRANCH_NAME"
       
       - name: Run clone in branch step (changing name)
         uses: ./.github/composites/clone-in-branch
@@ -42,7 +51,7 @@ jobs:
           repo_url: $(git config --get remote.origin.url)
           path: ${{ github.workspace }}/../branch-checkout-test
           verbose: true
-          prioritized_branches: "noexiste,${{ github.head_ref }},noexiste2,main"
+          prioritized_branches: "noexiste,$BRANCH_NAME,noexiste2,main"
       
       - name: Setup folder for silent branch checkout test
         working-directory: ${{ github.workspace }}/../
@@ -53,4 +62,5 @@ jobs:
         with:
           repo_url: $(git config --get remote.origin.url)
           path: ${{ github.workspace }}/../silent-branch-checkout-test
-          prioritized_branches: "noexiste,${{ github.head_ref }},noexiste2,main"
+          prioritized_branches: "noexiste,$BRANCH_NAME,noexiste2,main"
+      

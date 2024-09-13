@@ -26,21 +26,23 @@ runs:
   steps:
     - name: Get repo url
       shell: bash
+      id: get-repo-url
       run: |
-        echo "REPO_URL=${{ inputs.repo_url }}" >> $GITHUB_ENV
+        echo "repo_url=${{ inputs.repo_url }}" >> $GITHUB_OUTPUT
         if [[ ${{ inputs.verbose }} == true ]] ; then
           echo "Received git url: ${{ inputs.repo_url }}"
         fi
     
     - name: Get repo name
       shell: bash
+      id: get-repo-name
       run: |
         if [[ -n "${{ inputs.target_name }}" ]]; then
           export REPO_NAME=${{ inputs.target_name }}
         else
-          export REPO_NAME=$(basename -s .git $REPO_URL)
+          export REPO_NAME=$(basename -s .git ${{ steps.get-repo-url.outputs.repo_url }})
         fi
-        echo "REPO_NAME=$REPO_NAME" >> $GITHUB_ENV
+        echo "repo_name=$REPO_NAME" >> $GITHUB_OUTPUT
         if [[ ${{ inputs.verbose }} == true ]] ; then
           echo "Target repository name: $REPO_NAME"
         fi
@@ -50,16 +52,16 @@ runs:
       shell: bash
       working-directory: ${{ inputs.path }}
       run: |
+        if [[ "${{ inputs.path }}" == */ ]]; then
+          FULL_PATH="${{ inputs.path }}${{ steps.get-repo-name.outputs.repo_name }}"
+        else
+          FULL_PATH="${{ inputs.path }}/${{ steps.get-repo-name.outputs.repo_name }}"
+        fi
+        echo "full_path=$FULL_PATH" >> "$GITHUB_OUTPUT"
         if [[ ${{ inputs.verbose }} == true ]] ; then
-          if [[ "${{ inputs.path }}" == */ ]]; then
-            FULL_PATH="${{ inputs.path }}$REPO_NAME"
-          else
-            FULL_PATH="${{ inputs.path }}/$REPO_NAME"
-          fi
-          echo "full_path=$FULL_PATH" >> "$GITHUB_OUTPUT"
           echo "Cloning with path: $FULL_PATH"
         fi
-        git clone $REPO_URL.git $REPO_NAME
+        git clone ${{ steps.get-repo-url.outputs.repo_url }}.git ${{ steps.get-repo-name.outputs.repo_name }}
     
     - name: Get target branch list
       shell: bash
@@ -67,7 +69,7 @@ runs:
       run: |
         IFS=',' read -r -a branches <<< "${{ inputs.prioritized_branches }}"
         for branch in "${branches[@]}"; do
-          if [[ $(git ls-remote --heads $REPO_URL.git $branch | wc -l) -eq 1 ]]; then
+          if [[ $(git ls-remote --heads ${{ steps.get-repo-url.outputs.repo_url }}.git $branch | wc -l) -eq 1 ]]; then
             if [[ ${{ inputs.verbose }} == true ]] ; then
               echo "Checking out to branch $branch"
             fi
