@@ -15,20 +15,34 @@ inputs:
   target_name:
     description: "Target name for the repository to clone"
     required: false
+  verbose:
+    description: "If set to true, show trace of the execution steps"
+    required: false
+    default: false
 
 runs:
   using: "composite"
   steps:
     - name: Get repo name
       shell: bash
-      run: echo "REPO_URL=${{ inputs.repo_url }}" >> $GITHUB_ENV
+      run: |
+        echo "REPO_URL=${{ inputs.repo_url }}" >> $GITHUB_ENV
+        if ${{ inputs.verbose }} == 'true':
+          echo "Received git url: $REPO_URL"
+        fi
 
     - name: Clone repository
       shell: bash
       working-directory: ${{ inputs.path }}
       run: |
         if [ -n "${{ inputs.target_name }}" ]; then
+          if ${{ inputs.verbose }} == 'true':
+            echo "Cloning with name: ${{ inputs.target_name }}"
+          fi
           git clone $REPO_URL ${{ inputs.target_name }}
         else
+          if ${{ inputs.verbose }} == 'true':
+            echo "Cloning with default name"
+          fi
           git clone $REPO_URL
         fi

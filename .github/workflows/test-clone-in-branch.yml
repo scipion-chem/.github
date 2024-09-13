@@ -19,6 +19,7 @@ jobs:
           repo_url: $(git config --get remote.origin.url)
           target_name: "test"
           path: ${{ github.workspace }}/../
+          verbose: true
 
       - name: Setup folder for default name test
         working-directory: ${{ github.workspace }}/../
@@ -29,3 +30,4 @@ jobs:
         with:
           repo_url: $(git config --get remote.origin.url)
           path: ${{ github.workspace }}/../default-name-test
+          verbose: true
