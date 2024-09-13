@@ -42,4 +42,4 @@ jobs:
           repo_url: $(git config --get remote.origin.url)
           path: ${{ github.workspace }}/../branch-checkout-test
           verbose: true
-          prioritized_branches: "noexiste,${{ github.head_ref }}"
+          prioritized_branches: "noexiste,${{ github.head_ref }},noexiste2,main"
