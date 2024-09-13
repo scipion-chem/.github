@@ -48,7 +48,7 @@ jobs:
         working-directory: ${{ github.workspace }}/../
         run: mkdir silent-branch-checkout-test
       
-      - name: Run clone in branch step (with branches)
+      - name: Run clone in branch step (with branches non verbose)
         uses: ./.github/composites/clone-in-branch
         with:
           repo_url: $(git config --get remote.origin.url)
