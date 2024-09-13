@@ -1,0 +1,16 @@
+name: "Checkout to branch if exists"
+description: "Clones the specified repository in the provided branches if exist"
+
+inputs:
+  repo_url:
+    description: "Url to the repository to clone"
+    required: true
+  prioritized_branches:
+    description: "List of branches to try to checkout in priority order"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Clone repository
+      run: git clone ${{ inputs.repo_url }}
