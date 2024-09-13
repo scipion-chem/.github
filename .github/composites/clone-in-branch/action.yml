@@ -20,6 +20,7 @@ runs:
   using: "composite"
   steps:
     - name: Get repo name
+      shell: bash
       run: echo "REPO_URL=\"${{ inputs.repo_url }}\"" >> $GITHUB_ENV
 
     - name: Clone repository
