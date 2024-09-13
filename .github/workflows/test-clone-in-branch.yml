@@ -43,3 +43,14 @@ jobs:
           path: ${{ github.workspace }}/../branch-checkout-test
           verbose: true
           prioritized_branches: "noexiste,${{ github.head_ref }},noexiste2,main"
+      
+      - name: Setup folder for silent branch checkout test
+        working-directory: ${{ github.workspace }}/../
+        run: mkdir silent-branch-checkout-test
+      
+      - name: Run clone in branch step (with branches)
+        uses: ./.github/composites/clone-in-branch
+        with:
+          repo_url: $(git config --get remote.origin.url)
+          path: ${{ github.workspace }}/../silent-branch-checkout-test
+          prioritized_branches: "noexiste,${{ github.head_ref }},noexiste2,main"
