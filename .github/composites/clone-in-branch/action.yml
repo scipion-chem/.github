@@ -10,7 +10,8 @@ inputs:
     required: true
   path:
     description: "Path to download the repository into"
-    required: true
+    required: false
+    default: ${{ github.workspace }}
   target_name:
     description: "Target name for the repository to clone"
     required: false
@@ -21,4 +22,8 @@ runs:
     - name: Clone repository
       shell: bash
       run: |
-        git clone ${{ inputs.repo_url }} ${{ inputs.target_name }}
+        if [ -n "${{ inputs.target_name }}" ]; then
+          git clone ${{ inputs.repo_url }} ${{ inputs.target_name }}
+        else
+          git clone ${{ inputs.repo_url }}
+        fi

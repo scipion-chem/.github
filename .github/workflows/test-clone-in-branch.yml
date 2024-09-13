@@ -13,9 +13,15 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
       
-      - name: Run clone in branch step
+      - name: Run clone in branch step (changing name)
         uses: ./.github/composites/clone-in-branch
         with:
           repo_url: $(git config --get remote.origin.url)
           target_name: "test"
           path: ${{ github.workspace }}/../
+      
+      - name: Run clone in branch step (default name)
+        uses: ./.github/composites/clone-in-branch
+        with:
+          repo_url: $(git config --get remote.origin.url)
+          path: ${{ github.workspace }}
