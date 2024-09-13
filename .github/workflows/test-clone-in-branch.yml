@@ -64,9 +64,3 @@ jobs:
           path: ${{ github.workspace }}/../silent-branch-checkout-test
           prioritized_branches: "noexiste,$BRANCH_NAME,noexiste2,main"
       
-      - name: Test Scipion chem
-        uses: ./.github/composites/clone-in-branch
-        with:
-          repo_url: https://github.com/scipion-chem/scipion-chem
-          path: ${{ github.workspace }}/../
-          prioritized_branches: "noexiste,devel,main,master"

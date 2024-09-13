@@ -67,8 +67,6 @@ runs:
       shell: bash
       working-directory: ${{ steps.clone-repository.outputs.full_path }}
       run: |
-        echo "Estoy en: $(pwd)"
-        echo "Veo: $(ls)"
         IFS=',' read -r -a branches <<< "${{ inputs.prioritized_branches }}"
         for branch in "${branches[@]}"; do
           if [[ $(git ls-remote --heads ${{ steps.get-repo-url.outputs.repo_url }}.git $branch | wc -l) -eq 1 ]]; then
