@@ -55,12 +55,14 @@ runs:
           else
             FULL_PATH="${{ inputs.path }}/$REPO_NAME"
           fi
+          echo "FULL_PATH=$FULL_PATH" >> $GITHUB_ENV
           echo "Cloning with path: $FULL_PATH"
         fi
         git clone $REPO_URL.git $REPO_NAME
     
     - name: Get target branch list
       shell: bash
+      working-directory: $FULL_PATH
       run: |
         IFS=',' read -r -a branches <<< "${{ inputs.prioritized_branches }}"
         for branch in "${branches[@]}"; do
