@@ -1,0 +1,78 @@
+name: "Checkout to branch if exists"
+description: "Clones the specified repository in the provided branches if exist"
+
+inputs:
+  repo_url:
+    description: "Url to the repository to clone"
+    required: true
+  prioritized_branches:
+    description: "Comma separated list of branches to try to checkout in priority order"
+    required: true
+  path:
+    description: "Path to download the repository into"
+    required: false
+    default: ${{ github.workspace }}
+  target_name:
+    description: "Target name for the repository to clone"
+    required: false
+  verbose:
+    description: "If set to true, show trace of the execution steps"
+    type: boolean
+    required: false
+    default: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: Get repo url
+      shell: bash
+      run: |
+        echo "REPO_URL=${{ inputs.repo_url }}" >> $GITHUB_ENV
+        if [[ ${{ inputs.verbose }} == true ]] ; then
+          echo "Received git url: ${{ inputs.repo_url }}"
+        fi
+    
+    - name: Get repo name
+      shell: bash
+      run: |
+        if [[ -n "${{ inputs.target_name }}" ]]; then
+          export REPO_NAME=${{ inputs.target_name }}
+        else
+          export REPO_NAME=$(basename -s .git $REPO_URL)
+        fi
+        echo "REPO_NAME=$REPO_NAME" >> $GITHUB_ENV
+        if [[ ${{ inputs.verbose }} == true ]] ; then
+          echo "Target repository name: $REPO_NAME"
+        fi
+
+    - name: Clone repository
+      shell: bash
+      working-directory: ${{ inputs.path }}
+      run: |
+        if [[ ${{ inputs.verbose }} == true ]] ; then
+          if [[ "${{ inputs.path }}" == */ ]]; then
+            FULL_PATH="${{ inputs.path }}$REPO_NAME"
+          else
+            FULL_PATH="${{ inputs.path }}/$REPO_NAME"
+          fi
+          echo "Cloning with path: $FULL_PATH"
+        fi
+        git clone $REPO_URL.git $REPO_NAME
+    
+    - name: Get target branch list
+      shell: bash
+      run: |
+        IFS=',' read -r -a branches <<< "${{ inputs.prioritized_branches }}"
+        for branch in "${branches[@]}"; do
+          if [[ $(git ls-remote --heads $REPO_URL.git $branch | wc -l) -eq 1 ]]; then
+            if [[ ${{ inputs.verbose }} == true ]] ; then
+              echo "Checking out to branch $branch"
+            fi
+            git checkout $branch
+            break
+          else
+            if [[ ${{ inputs.verbose }} == true ]] ; then
+              echo "Branch '$branch' does not exist. Skipping"
+            fi
+          fi
+        done
