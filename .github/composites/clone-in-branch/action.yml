@@ -64,11 +64,15 @@ runs:
       run: |
         IFS=',' read -r -a branches <<< "${{ inputs.prioritized_branches }}"
         for branch in "${branches[@]}"; do
-          if [ $(git ls-remote --heads $REPO_URL.git $branch | wc -l) -eq 1 ]; then
-            echo "Checking out to branch $branch"
+          if [[ $(git ls-remote --heads $REPO_URL.git $branch | wc -l) -eq 1 ]]; then
+            if [[ ${{ inputs.verbose }} == true ]] ; then
+              echo "Checking out to branch $branch"
+            fi
             git checkout $branch
             break
           else
-            echo "Branch '$branch' does not exist. Skipping"
+            if [[ ${{ inputs.verbose }} == true ]] ; then
+              echo "Branch '$branch' does not exist. Skipping"
+            fi
           fi
         done
