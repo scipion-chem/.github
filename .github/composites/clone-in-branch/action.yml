@@ -19,5 +19,6 @@ runs:
   using: "composite"
   steps:
     - name: Clone repository
+      shell: bash
       run: |
         git clone ${{ inputs.repo_url }} ${{ inputs.target_name }}
