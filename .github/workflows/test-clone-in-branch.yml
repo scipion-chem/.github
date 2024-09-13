@@ -11,10 +11,12 @@ jobs:
       - name: Get branch name
         run: |
           if [ "${{ github.event_name }}" == "pull_request" ]; then
-            echo "BRANCH_NAME=${{ github.head_ref }}" >> $GITHUB_ENV
+            BRANCH_NAME=${{ github.head_ref }}
           else
-            echo "BRANCH_NAME=${{ github.ref }}" >> $GITHUB_ENV
+            BRANCH_NAME=${{ github.ref }}
           fi
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+          echo "Branch name: $BRANCH_NAME"
 
       - name: Checkout repository
         uses: actions/checkout@main
