@@ -8,9 +8,16 @@ inputs:
   prioritized_branches:
     description: "List of branches to try to checkout in priority order"
     required: true
+  path:
+    description: "Path to download the repository into"
+    required: true
+  target_name:
+    description: "Target name for the repository to clone"
+    required: false
 
 runs:
   using: "composite"
   steps:
     - name: Clone repository
-      run: git clone ${{ inputs.repo_url }}
+      run: |
+        git clone ${{ inputs.repo_url }} ${{ inputs.target_name }}
