@@ -8,20 +8,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@main
+
       - name: Get branch name
         run: |
           if [ "${{ github.event_name }}" == "pull_request" ]; then
             BRANCH_NAME=${{ github.head_ref }}
           else
-            BRANCH_NAME=${{ github.ref }}
+            ref=${{ github.ref }}
+            BRANCH_NAME=${ref#refs/heads/}
           fi
           echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
           echo "Branch name: $BRANCH_NAME"
-
-      - name: Checkout repository
-        uses: actions/checkout@main
-        with:
-          ref: $BRANCH_NAME
       
       - name: Run clone in branch step (changing name)
         uses: ./.github/composites/clone-in-branch
