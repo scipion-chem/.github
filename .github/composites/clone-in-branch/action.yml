@@ -19,12 +19,15 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Get repo name
+      run: echo "REPO_URL=\"${{ inputs.repo_url }}\"" >> $GITHUB_ENV
+
     - name: Clone repository
       shell: bash
       working-directory: ${{ inputs.path }}
       run: |
         if [ -n "${{ inputs.target_name }}" ]; then
-          git clone ${{ inputs.repo_url }} ${{ inputs.target_name }}
+          git clone $REPO_URL ${{ inputs.target_name }}
         else
-          git clone ${{ inputs.repo_url }}
+          git clone $REPO_URL
         fi
