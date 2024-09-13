@@ -34,7 +34,7 @@ runs:
     - name: Get repo name
       shell: bash
       run: |
-        if [ -n "${{ inputs.target_name }}" ]; then
+        if [[ -n "${{ inputs.target_name }}" ]]; then
           export REPO_NAME=${{ inputs.target_name }}
         else
           export REPO_NAME=$(basename -s .git $REPO_URL)
@@ -48,15 +48,12 @@ runs:
       shell: bash
       working-directory: ${{ inputs.path }}
       run: |
-        if [ -n "${{ inputs.target_name }}" ]; then
-          if [[ ${{ inputs.verbose }} == 'true' ]] ; then
-            echo "Cloning with path: ${{ inputs.path }}/${{ inputs.target_name }}"
+        if [[ ${{ inputs.verbose }} == 'true' ]] ; then
+          if [[ "${{ inputs.path }}" == */ ]]; then
+            FULL_PATH="${{ inputs.path }}$REPO_NAME"
+          else
+            FULL_PATH="${{ inputs.path }}/$REPO_NAME"
           fi
-          git clone $REPO_URL ${{ inputs.target_name }}
-        else
-          if [[ ${{ inputs.verbose }} == 'true' ]] ; then
-            echo "Cloning with path: ${{ inputs.path }}/"
-          fi
-          git clone $REPO_URL
         fi
-        $(basename -s .git "$repo_url")
+        echo "Cloning with path: $FULL_PATH"
+        git clone $REPO_URL $REPO_NAME
