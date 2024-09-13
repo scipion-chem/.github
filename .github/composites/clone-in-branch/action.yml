@@ -23,12 +23,25 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Get repo name
+    - name: Get repo url
       shell: bash
       run: |
         echo "REPO_URL=${{ inputs.repo_url }}" >> $GITHUB_ENV
         if [[ ${{ inputs.verbose }} == 'true' ]] ; then
           echo "Received git url: ${{ inputs.repo_url }}"
+        fi
+    
+    - name: Get repo name
+      shell: bash
+      run: |
+        if [ -n "${{ inputs.target_name }}" ]; then
+          export REPO_NAME=${{ inputs.target_name }}
+        else
+          export REPO_NAME=$(basename -s .git $REPO_URL)
+        fi
+        echo "REPO_NAME=$REPO_NAME" >> $GITHUB_ENV
+        if [[ ${{ inputs.verbose }} == 'true' ]] ; then
+          echo "Target repository name: $REPO_NAME"
         fi
 
     - name: Clone repository
@@ -37,12 +50,13 @@ runs:
       run: |
         if [ -n "${{ inputs.target_name }}" ]; then
           if [[ ${{ inputs.verbose }} == 'true' ]] ; then
-            echo "Cloning with name: ${{ inputs.target_name }}"
+            echo "Cloning with path: ${{ inputs.path }}/${{ inputs.target_name }}"
           fi
           git clone $REPO_URL ${{ inputs.target_name }}
         else
           if [[ ${{ inputs.verbose }} == 'true' ]] ; then
-            echo "Cloning with default name"
+            echo "Cloning with path: ${{ inputs.path }}/"
           fi
           git clone $REPO_URL
         fi
+        $(basename -s .git "$repo_url")
