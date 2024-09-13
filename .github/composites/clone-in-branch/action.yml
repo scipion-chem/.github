@@ -28,7 +28,7 @@ runs:
       run: |
         echo "REPO_URL=${{ inputs.repo_url }}" >> $GITHUB_ENV
         if [[ ${{ inputs.verbose }} == 'true' ]] ; then
-          echo "Received git url: $REPO_URL"
+          echo "Received git url: ${{ inputs.repo_url }}"
         fi
 
     - name: Clone repository
