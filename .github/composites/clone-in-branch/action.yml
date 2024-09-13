@@ -21,6 +21,7 @@ runs:
   steps:
     - name: Clone repository
       shell: bash
+      working-directory: ${{ inputs.path }}
       run: |
         if [ -n "${{ inputs.target_name }}" ]; then
           git clone ${{ inputs.repo_url }} ${{ inputs.target_name }}
