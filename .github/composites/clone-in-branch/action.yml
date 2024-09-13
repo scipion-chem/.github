@@ -52,13 +52,13 @@ runs:
       shell: bash
       working-directory: ${{ inputs.path }}
       run: |
+        if [[ "${{ inputs.path }}" == */ ]]; then
+          FULL_PATH="${{ inputs.path }}${{ steps.get-repo-name.outputs.repo_name }}"
+        else
+          FULL_PATH="${{ inputs.path }}/${{ steps.get-repo-name.outputs.repo_name }}"
+        fi
+        echo "full_path=$FULL_PATH" >> "$GITHUB_OUTPUT"
         if [[ ${{ inputs.verbose }} == true ]] ; then
-          if [[ "${{ inputs.path }}" == */ ]]; then
-            FULL_PATH="${{ inputs.path }}${{ steps.get-repo-name.outputs.repo_name }}"
-          else
-            FULL_PATH="${{ inputs.path }}/${{ steps.get-repo-name.outputs.repo_name }}"
-          fi
-          echo "full_path=$FULL_PATH" >> "$GITHUB_OUTPUT"
           echo "Cloning with path: $FULL_PATH"
         fi
         git clone ${{ steps.get-repo-url.outputs.repo_url }}.git ${{ steps.get-repo-name.outputs.repo_name }}
