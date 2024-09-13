@@ -6,7 +6,7 @@ inputs:
     description: "Url to the repository to clone"
     required: true
   prioritized_branches:
-    description: "List of branches to try to checkout in priority order"
+    description: "Comma separated list of branches to try to checkout in priority order"
     required: true
   path:
     description: "Path to download the repository into"
@@ -58,3 +58,11 @@ runs:
           echo "Cloning with path: $FULL_PATH"
         fi
         git clone $REPO_URL $REPO_NAME
+    
+    - name: Get target branch list
+      shell: bash
+      run: |
+        IFS=',' read -r -a branches <<< "${{ inputs.prioritized_branches }}"
+        for branch in "${branches[@]}"; do
+          echo "Branch: $branch"
+        done
