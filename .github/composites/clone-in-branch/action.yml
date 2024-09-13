@@ -57,12 +57,18 @@ runs:
           fi
           echo "Cloning with path: $FULL_PATH"
         fi
-        git clone $REPO_URL $REPO_NAME
+        git clone $REPO_URL.git $REPO_NAME
     
     - name: Get target branch list
       shell: bash
       run: |
         IFS=',' read -r -a branches <<< "${{ inputs.prioritized_branches }}"
         for branch in "${branches[@]}"; do
-          echo "Branch: $branch"
+          if [ $(git ls-remote --heads $REPO_URL.git $branch | wc -l) -eq 1 ]; then
+            echo "Checking out to branch $branch"
+            git checkout $branch
+            break
+          else
+            echo "Branch '$branch' does not exist. Skipping"
+          fi
         done
