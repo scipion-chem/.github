@@ -54,3 +54,10 @@ jobs:
           repo_url: $(git config --get remote.origin.url)
           path: ${{ github.workspace }}/../silent-branch-checkout-test
           prioritized_branches: "noexiste,${{ github.head_ref }},noexiste2,main"
+      
+      - name: Test Scipion chem
+        uses: ./.github/composites/clone-in-branch
+        with:
+          repo_url: https://github.com/scipion-chem/scipion-chem
+          path: ${{ github.workspace }}/../
+          prioritized_branches: "noexiste,devel,main,master"
