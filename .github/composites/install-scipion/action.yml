@@ -18,6 +18,7 @@ runs:
       with:
         miniconda-version: "latest"
         auto-update-conda: true
+        auto-activate-base: true
         activate-environment: scipion3
         python-version: 3.8
     
