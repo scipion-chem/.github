@@ -19,7 +19,7 @@ runs:
         miniconda-version: "latest"
         auto-update-conda: true
         activate-environment: scipion3
-        python-version: "3.8"
+        python-version: 3.8
     
     - name: Install Scipion
       shell: bash
