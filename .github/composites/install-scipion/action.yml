@@ -5,13 +5,8 @@ runs:
   using: "composite"
   steps:
     - name: Free Disk Space (Ubuntu only)
-      uses: jlumbroso/free-disk-space@main
+      uses: jlumbroso/free-disk-space@1.3.1
 
-    - name: Set up MPI
-      uses: mpi4py/setup-mpi@master
-      with:
-        mpi: 'openmpi'
-    
     - name: Install dependencies
       shell: bash
       run: |
@@ -19,7 +14,7 @@ runs:
         sudo apt-get install -y wget gcc g++ make cmake
     
     - name: Install Miniconda
-      uses: conda-incubator/setup-miniconda@main
+      uses: conda-incubator/setup-miniconda@v3
       with:
         miniconda-version: "latest"
         auto-update-conda: true
