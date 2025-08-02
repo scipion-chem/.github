@@ -8,7 +8,7 @@ runs:
       uses: jlumbroso/free-disk-space@v1.3.1
 
     - name: Install dependencies
-      shell: bash
+      shell: bash -el {0}
       run: |
         sudo apt-get update
         sudo apt-get install -y wget gcc g++ make cmake
@@ -23,10 +23,9 @@ runs:
         python-version: 3.8
     
     - name: Install Scipion
-      shell: bash
+      shell: bash -el {0}
       working-directory: ${{ github.workspace }}/../
       run: |
-        which pip
         pip cache purge
         pip install --user scipion-installer
         python -m scipioninstaller -conda -noAsk scipion
