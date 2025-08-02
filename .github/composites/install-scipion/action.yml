@@ -18,7 +18,6 @@ runs:
       with:
         miniconda-version: "latest"
         auto-update-conda: true
-        auto-activate-base: true
         activate-environment: scipion3
         python-version: "3.8"
     
@@ -26,6 +25,7 @@ runs:
       shell: bash
       working-directory: ${{ github.workspace }}/../
       run: |
+        conda activate scipion3
         pip cache purge
         pip install --user scipion-installer
         python -m scipioninstaller -conda -noAsk scipion
