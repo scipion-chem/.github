@@ -26,7 +26,7 @@ runs:
       shell: bash
       working-directory: ${{ github.workspace }}/../
       run: |
-        source ~/.bashrc
+        source ${{ github.workspace }}/.bashrc
         which pip
         pip cache purge
         pip install --user scipion-installer
